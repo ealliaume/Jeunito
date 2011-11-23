@@ -17,7 +17,7 @@ class Jeunito_Database_Doctrine_TestCase extends PHPUnit_Extensions_Database_Tes
 		$pdo = new PDO(
 			"mysql:host=localhost;dbname=" . $GLOBALS['DB_NAME'], 
 			$GLOBALS['DB_USER'], 
-			"password"
+			$GLOBALS['DB_PASSWORD']
 		);
 		return $this->createDefaultDBConnection($pdo, $GLOBALS['DB_NAME']);
 	}
@@ -33,7 +33,11 @@ class Jeunito_Database_Doctrine_TestCase extends PHPUnit_Extensions_Database_Tes
 
 	private function getDoctrineCnxnString() 
 	{
-		return "mysql://root:password@localhost/fbapp2";
+		$user = $GLOBALS['DB_USER'];
+		$pass = $GLOBALS['DB_PASSWORD'];
+		$dbnm = $GLOBALS['DB_NAME'];
+
+		return "mysql://$user:$pass@localhost/$dbnm";
 	}
 
 }
