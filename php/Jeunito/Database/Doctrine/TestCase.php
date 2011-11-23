@@ -16,7 +16,7 @@ class Jeunito_Database_Doctrine_TestCase extends PHPUnit_Extensions_Database_Tes
 	{
 		$pdo = new PDO(
 			"mysql:host=localhost;dbname=" . $GLOBALS['DB_NAME'], 
-			"root", 
+			$GLOBALS['DB_USER'], 
 			"password"
 		);
 		return $this->createDefaultDBConnection($pdo, $GLOBALS['DB_NAME']);
