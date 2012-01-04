@@ -4,6 +4,9 @@ class Jeunito_Database_Doctrine_TestCase extends PHPUnit_Extensions_Database_Tes
 
 	private $_dataSetPath;
 
+	private $_useCustomDataSet = false;
+
+
 	public function setUp() 
 	{
 		parent::setUp();
@@ -24,13 +27,25 @@ class Jeunito_Database_Doctrine_TestCase extends PHPUnit_Extensions_Database_Tes
 	
 	protected function getDataSet()
 	{
-		if (!isset($GLOBALS['DB_SEED'])) {
-			if (!is_null($_dataSetPath)) {
-		  		throw new Exception('No Data Set.');	
-			} 
-			$dataSetPath = $this->_dataSetPath;
+
+		if (!$this->_useCustomDataSet) {
+			if (!isset($GLOBALS['DB_SEED'])) {
+				if (!is_null($_dataSetPath)) {
+		  			throw new Exception('No Data Set.');	
+				} 
+				$dataSetPath = $this->_dataSetPath;
+			} else {
+				$dataSetPath = $GLOBALS['DB_SEED'];
+			}
 		} else {
-			$dataSetPath = $GLOBALS['DB_SEED'];
+			$dataSetPath = $this->_dataSetPath;
+			if (is_null($dataSetPath)) {
+				throw new Exception('No Data Set.');
+			}
+		}
+		
+		if ($this->_useCustomDataSet) {
+			return $this->createMySQLXMLDataSet($dataSetPath);
 		}
 		return $this->createXMLDataSet($dataSetPath);
 	}
@@ -45,7 +60,8 @@ class Jeunito_Database_Doctrine_TestCase extends PHPUnit_Extensions_Database_Tes
 	}
 
 	protected function setDataSetPath($dataSetPath) 
-	{
+	{	
+		$this->_useCustomDataSet = true;
 		$this->_dataSetPath = $dataSetPath;
 	}
 
