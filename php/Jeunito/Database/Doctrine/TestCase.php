@@ -25,9 +25,13 @@ class Jeunito_Database_Doctrine_TestCase extends PHPUnit_Extensions_Database_Tes
 	protected function getDataSet()
 	{
 		if (!isset($GLOBALS['DB_SEED'])) {
-			throw new Exception('No Data Set.');
+			if (!is_null($_dataSetPath)) {
+		  		throw new Exception('No Data Set.');	
+			} 
+			$dataSetPath = $this->_dataSetPath;
+		} else {
+			$dataSetPath = $GLOBALS['DB_SEED'];
 		}
-		$dataSetPath = $GLOBALS['DB_SEED'];
 		return $this->createXMLDataSet($dataSetPath);
 	}
 
@@ -38,6 +42,11 @@ class Jeunito_Database_Doctrine_TestCase extends PHPUnit_Extensions_Database_Tes
 		$dbnm = $GLOBALS['DB_NAME'];
 
 		return "mysql://$user:$pass@localhost/$dbnm";
+	}
+
+	protected function setDataSetPath($dataSetPath) 
+	{
+		$this->_dataSetPath = $dataSetPath;
 	}
 
 }
